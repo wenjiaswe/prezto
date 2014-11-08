@@ -18,6 +18,10 @@ function +vi-git-status() {
 
 function prompt_minimal_precmd {
   vcs_info
+  if (( $+functions[python-info] )); then
+    python-info on
+    python-info
+  fi
 }
 
 function prompt_minimal_setup {
@@ -41,10 +45,11 @@ function prompt_minimal_setup {
   zstyle ':vcs_info:*' actionformats " - [%b%c%u|%F{cyan}%a%f]"
   zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b|%F{cyan}%r%f'
   zstyle ':vcs_info:git*+set-message:*' hooks git-status
+  zstyle ':prezto:module:python:info:virtualenv' format '[%F{green}%v%f]'
 
   # Define prompts.
   PROMPT='%F{yellow}%m%f » '
-  RPROMPT='%F{yellow}%~%f${vcs_info_msg_0_}'
+  RPROMPT='%F{yellow}%~%f${vcs_info_msg_0_}${python_info[virtualenv]}'
 }
 
 prompt_minimal_setup "$@"
