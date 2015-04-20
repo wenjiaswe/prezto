@@ -13,88 +13,9 @@ export EDITOR=/usr/bin/emacs
 # Root Path
 export PATH=/Users/jbetz/bin:${PATH}
 
-# Linkedin tools
-export PATH=$PATH:/usr/local/linkedin/bin
+# arc
+export PATH=~/base/phacility/arcanist/bin:$PATH
+# source /Users/jbetz/base/phacility/arcanist/resources/shell/bash-completion
 
-# Git
-export GIT_REPOS=/export/gitrepos
-export GIT_HOME=/usr/local/git
-export PATH=$PATH:$GIT_HOME/bin
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_75.jdk/Contents/Home
 
-# Play
-export PLAY_HOME=/usr/local/play-2.0.4
-export PATH=${PLAY_HOME}:${PATH}
-
-# Gradle
-export GRADLE_HOME=/usr/local/gradle
-export PATH=${GRADLE_HOME}/bin:${PATH}
-export GRADLE_OPTS="-Dorg.gradle.daemon=true"
-export GRADLE_OPTS="-Xms512m -Xmx512m -XX:MaxPermSize=512m"
-#export GRADLE_OPTS=-XX:MaxPermSize=512m
-
-# GO
-#export GOROOT=/usr/local/go
-#export GOOS=darwin
-#export GOARCH=amd64
-#export GOBIN=/usr/local/go/bin
-#export PATH=$PATH:$GOBIN
-
-# Scala
-export SCALA_ROOT=/usr/local/scala
-export PATH=$PATH:$SCALA_ROOT/bin
-
-# SBT
-export SBT_HOME=/usr/local/sbt
-export PATH=$SBT_HOME/bin:$PATH
-export SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
-
-# MongoDB
-export MONGO_HOME=/usr/local/mongodb
-export PATH=$PATH:$MONGO_HOME/bin
-
-# Kafka
-export KAFKA_HOME=/usr/local/kafka
-export PATH=$PATH:$KAFKA_HOME/bin
-
-# Zookeeper
-export ZOO_HOME=/usr/local/zookeeper
-export PATH=$PATH:$ZOO_HOME/bin
-
-# Sensei
-export SENSEI_HOME=/usr/local/sensei
-export PATH=$PATH:$SENSEI_HOME/bin
-
-# SIN
-export SIN_HOME=/usr/local/sin
-export STORE_HOME=/var/sin-store
-
-# Setting PATH for Python 2.7
-# The orginal version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
-export PATH
-
-# CLI-UTIL
-export BULLHORN_HOME=/Users/jbetz/projects/cli-util/example
-export PATH=$PATH:$BULLHORN_HOME/bin
-
-# Antlr
-export CLASSPATH=$CLASSPATH:/usr/local/antlr-3.4/lib/antlr-3.4-complete.jar
-
-# Espresso
-export ESPRESSO=/Users/jbetz/projects/espresso_trunk
-
-# YARN
-export YARN_HOME=$HOME/.yarn
-
-# Sudoku solver
-export SUDOKU_HOME=/Users/jbetz/projects/sudoku-dlx
-export PATH=$PATH:$SUDOKU_HOME/cli-bin
-
-# Kraken
-export KRAKEN_HOME=/Users/jbetz/projects/kraken
-export PATH=$PATH:$KRAKEN_HOME/bin
-export PATH=$PATH:$KRAKEN_HOME/scripts
-alias kraken='cd ${KRAKEN_HOME}'
-
-# python 2.7
-alias xpython="/Library/Frameworks/Python.framework/Versions/2.7/bin/python"
