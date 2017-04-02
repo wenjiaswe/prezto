@@ -1,0 +1,28 @@
+multiproduct_jump() {
+  if [ $# -eq 0 ]; then
+    local dir
+    for dir in $(upsearch product-spec.json); do
+      if [[ "$dir" != "/" && "$dir" != "$HOME"  ]]; then
+         cd $dir
+	 return 0
+      fi
+    done
+    echo "Not in an MP: $PWD"
+  elif [[ $# -gt 0 && $# -lt 3 ]]; then
+    local mp_path="$HOME/projects/$1_trunk"
+    if [ -d $mp_path ]; then
+      if [ $# -eq 1 ]; then
+        cd $mp_path
+      else
+        cd $mp_path/$2
+      fi
+    else
+      echo "MP not found: $1 at $mp_path"
+      return 1
+    fi
+  else
+    echo "Usage: $0 [mp_name [path]]"
+    return 1
+  fi
+  return 0
+}

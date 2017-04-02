@@ -1,0 +1,11 @@
+#compdef multiproduct_jump 
+local path
+local state
+
+_arguments "1:multiproduct:->multiproduct" && ret=0
+case "$state" in
+  (multiproduct)
+    _arguments '1:multiproduct:($(echo $HOME/projects/*_trunk | /usr/bin/xargs -n 1 -I % /usr/bin/basename % _trunk | /usr/bin/tr \\n " "))'
+    _describe -t multiproduct 'multiproduct' multiproduct && ret=0
+  ;;
+esac

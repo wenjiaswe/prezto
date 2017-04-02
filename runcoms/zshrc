@@ -11,6 +11,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# load my functions and completions
+fpath=(~/.zprezto/functions $fpath)
+autoload -U ~/.zprezto/functions/*(:t)
+fpath=(~/.zprezto/completion $fpath)
+
 # Load my profile.
 source ~/.zprofile
 
@@ -22,6 +27,7 @@ if [ -f '/Users/jbetz/google-cloud-sdk/completion.zsh.inc' ]; then source '/User
 
 # https://github.com/ryanoasis/nerd-fonts#option-1-install-script
 
+############# Powerlevel9k config #####################
 # 'custom_postfix' Postfix prompt customization
 prompt_postfix() {
   echo "\uf0e7"
@@ -51,33 +57,6 @@ lnkd_mp() {
        echo "\uf06c $name" # mint leaf
     fi
   done
-}
-
-PROMPT=${PWD/#$HOME/~}
-mcd() {
-  if [ $# -eq 0 ]; then
-    local dir
-    for dir in $(upsearch product-spec.json); do
-      if [[ "$dir" != "/" && "$dir" != "$HOME"  ]]; then
-         cd $dir
-      else
-        echo "Not in an MP."
-      fi
-    done
-  elif [[ $# -gt 0 && $# -lt 3 ]]; then
-    local mp_path="$HOME/projects/$1_trunk"
-    if [ -d $mp_path ]; then
-      if [ $# -eq 1 ]; then
-        cd $mp_path
-      else
-        cd $mp_path/$2
-      fi
-    else
-      echo "MP not found: $1 at $mp_path"
-    fi
-  else
-    echo "Usage: $0 [mp_name [path]]"
-  fi
 }
 
 POWERLEVEL9K_CUSTOM_MP="lnkd_mp"

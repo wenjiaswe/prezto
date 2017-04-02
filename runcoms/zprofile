@@ -47,3 +47,5 @@ alias ps="ps -ef"
 
 # try this out?
 # rm='trash-put -v'
+
+alias mcd='multiproduct_jump'
