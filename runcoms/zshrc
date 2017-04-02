@@ -22,6 +22,7 @@ if [ -f '/Users/jbetz/google-cloud-sdk/completion.zsh.inc' ]; then source '/User
 
 # https://github.com/ryanoasis/nerd-fonts#option-1-install-script
 
+# 'custom_postfix' Postfix prompt customization
 prompt_postfix() {
   echo "\uf0e7"
 }
@@ -30,6 +31,7 @@ POWERLEVEL9K_CUSTOM_SYMBOL="prompt_postfix"
 POWERLEVEL9K_CUSTOM_SYMBOL_BACKGROUND='234'
 POWERLEVEL9K_CUSTOM_SYMBOL_FOREGROUND='003'
 
+# 'lnkd' LinkedIn 'in' customization
 lnkd() {
   echo '\uf08c' # LinkedinIn 'in'
 }
@@ -38,7 +40,23 @@ POWERLEVEL9K_CUSTOM_LNKD="lnkd"
 POWERLEVEL9K_CUSTOM_LNKD_BACKGROUND='white'
 POWERLEVEL9K_CUSTOM_LNKD_FOREGROUND='033'
 
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs virtualenv context dir)
+# MP identifying script
+lnkd_mp() {
+  for product_spec_dir in $(upsearch product-spec.json); do
+    if [[ "$product_spec_dir" != "/" && "$product_spec_dir" != "$HOME"  ]]; then
+       local name=$(jq -r .name $product_spec_dir/product-spec.json)
+       local name=$(jq -r .name $product_spec_dir/product-spec.json)
+       # echo "\uf08c $name" # LinkedinIn 'in'
+       echo "\uf06c $name" # mint leaf
+    fi
+  done
+}
+
+POWERLEVEL9K_CUSTOM_MP="lnkd_mp"
+POWERLEVEL9K_CUSTOM_MP_BACKGROUND='green'
+POWERLEVEL9K_CUSTOM_MP_FOREGROUND='black'
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_mp vcs virtualenv context dir)
 POWERLEVEL9K_DISABLE_RPROMPT=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
 POWERLEVEL9K_VCS_GIT_ICON=''

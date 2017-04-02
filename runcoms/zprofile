@@ -44,3 +44,6 @@ alias notify='terminal-notifier -title "Zsh (exit:$?)"'
 alias xx='atool -x'
 
 alias ps="ps -ef"
+
+# try this out?
+# rm='trash-put -v'
