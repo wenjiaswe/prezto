@@ -42,6 +42,7 @@ POWERLEVEL9K_CUSTOM_LNKD_FOREGROUND='033'
 
 # MP identifying script
 lnkd_mp() {
+  local product_spec
   for product_spec_dir in $(upsearch product-spec.json); do
     if [[ "$product_spec_dir" != "/" && "$product_spec_dir" != "$HOME"  ]]; then
        local name=$(jq -r .name $product_spec_dir/product-spec.json)
@@ -52,10 +53,38 @@ lnkd_mp() {
   done
 }
 
+PROMPT=${PWD/#$HOME/~}
+mcd() {
+  if [ $# -eq 0 ]; then
+    local dir
+    for dir in $(upsearch product-spec.json); do
+      if [[ "$dir" != "/" && "$dir" != "$HOME"  ]]; then
+         cd $dir
+      else
+        echo "Not in an MP."
+      fi
+    done
+  elif [[ $# -gt 0 && $# -lt 3 ]]; then
+    local mp_path="$HOME/projects/$1_trunk"
+    if [ -d $mp_path ]; then
+      if [ $# -eq 1 ]; then
+        cd $mp_path
+      else
+        cd $mp_path/$2
+      fi
+    else
+      echo "MP not found: $1 at $mp_path"
+    fi
+  else
+    echo "Usage: $0 [mp_name [path]]"
+  fi
+}
+
 POWERLEVEL9K_CUSTOM_MP="lnkd_mp"
 POWERLEVEL9K_CUSTOM_MP_BACKGROUND='green'
 POWERLEVEL9K_CUSTOM_MP_FOREGROUND='black'
 
+# disabled: go_version - too verbose
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_mp vcs virtualenv context dir)
 POWERLEVEL9K_DISABLE_RPROMPT=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
