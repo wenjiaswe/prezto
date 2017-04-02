@@ -4,6 +4,7 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
+POWERLEVEL9K_MODE='nerdfont-fontconfig'
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -12,3 +13,53 @@ fi
 
 # Load my profile.
 source ~/.zprofile
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jbetz/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/jbetz/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jbetz/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/jbetz/google-cloud-sdk/completion.zsh.inc'; fi
+
+# https://github.com/ryanoasis/nerd-fonts#option-1-install-script
+
+prompt_postfix() {
+  echo "\uf0e7"
+}
+
+POWERLEVEL9K_CUSTOM_SYMBOL="prompt_postfix"
+POWERLEVEL9K_CUSTOM_SYMBOL_BACKGROUND='234'
+POWERLEVEL9K_CUSTOM_SYMBOL_FOREGROUND='003'
+
+lnkd() {
+  echo '\uf08c' # LinkedinIn 'in'
+}
+
+POWERLEVEL9K_CUSTOM_LNKD="lnkd"
+POWERLEVEL9K_CUSTOM_LNKD_BACKGROUND='white'
+POWERLEVEL9K_CUSTOM_LNKD_FOREGROUND='033'
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs virtualenv context dir)
+POWERLEVEL9K_DISABLE_RPROMPT=true
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
+POWERLEVEL9K_VCS_GIT_ICON=''
+
+DIR_BACKGROUND='234'
+DIR_FOREGROUND='003'
+POWERLEVEL9K_DIR_HOME_BACKGROUND=$DIR_BACKGROUND
+POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=$DIR_BACKGROUND
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=$DIR_BACKGROUND
+POWERLEVEL9K_DIR_HOME_FOREGROUND=$DIR_FOREGROUND
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=$DIR_FOREGROUND
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=$DIR_FOREGROUND
+POWERLEVEL9K_HOME_ICON=''
+POWERLEVEL9K_HOME_SUB_ICON=''
+POWERLEVEL9K_FOLDER_ICON=''
+
+DEFAULT_USER=jbetz
+
+POWERLEVEL9K_VCS_CLEAN_BACKGROUND='011'
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
+POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
+
+POWERLEVEL9K_SHOW_CHANGESET=true
+

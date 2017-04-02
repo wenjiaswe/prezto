@@ -73,7 +73,9 @@ zstyle ':prezto:module:editor' keymap 'emacs'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'minimal'
+# zstyle ':prezto:module:prompt' theme 'minimal'
+# https://github.com/bhilburn/powerlevel9k
+zstyle ':prezto:module:prompt' theme 'powerlevel9k'
 
 #
 # Screen
