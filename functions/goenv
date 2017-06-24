@@ -9,7 +9,12 @@ goenv() {
       return 1
     fi
     export GOPATH=$env_dir
-    export PATH=$PATH:$GOPATH/bin
+    # Remove previous GOENV_PATH
+    if [ $GOENV_PATH ]; then
+      export PATH=${PATH//:$GOENV_PATH/}
+    fi
+    export GOENV_PATH=$GOPATH/bin
+    export PATH=$PATH:$GOENV_PATH
     cd $project_dir
     return 0
   fi
