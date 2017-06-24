@@ -1,0 +1,27 @@
+goenv() {
+  if [ $1 ]; then
+    local env_dir=$HOME/Projects/$1
+    local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
+    local gvm=$(jq -r .gvm $env_dir/.goenv)
+    gvm use $gvm > /dev/null
+    if [ $? -ne 0 ]; then
+      echo "gvm use ${gvm} failed."
+      return 1
+    fi
+    export GOPATH=$env_dir
+    export PATH=$PATH:$GOPATH/bin
+    cd $project_dir
+    return 0
+  fi
+
+  local env_dir=$(lookup_goenv_dir)  
+  if [ $env_dir ]; then
+      local name=$(jq -r .name $env_dir/.goenv)
+      local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
+      echo "$name"
+      echo "\tproject_dir: ${project_dir}"
+      echo "\tgo: ${$(which go)} (${$(go version)})"
+      echo "\tGOPATH: ${GOPATH}"
+      echo "\tGOROOT: ${GOROOT}"
+  fi
+}

@@ -1,0 +1,16 @@
+#compdef goenv
+
+_goenv() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  _arguments \
+    "1: :->project"
+    
+  case "$state" in
+    (project)
+      _arguments '1:project:($(ls $HOME/Projects || xargs /bin/basename || tr \\n " "))' ;;
+  esac
+}
+
+_goenv "$@"
