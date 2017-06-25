@@ -1,0 +1,12 @@
+upsearch_first () {
+  if [[ "$PWD" = "$HOME" || "$PWD" = "/" ]]; then
+    return 0
+  elif test -e "$1"; then
+    echo "$PWD"
+    return 0
+  else
+    pushd .. > /dev/null
+    upsearch_first "$1"
+    popd > /dev/null
+  fi
+}

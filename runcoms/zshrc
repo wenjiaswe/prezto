@@ -1,16 +1,10 @@
-#
-# Executes commands at the start of an interactive session.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
 export TERM="xterm-256color"
-POWERLEVEL9K_MODE='nerdfont-fontconfig'
+
+# GVM
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+[[ -s "$HOME/.zprezto/init.zsh" ]] && source "$HOME/.zprezto/init.zsh"
 
 # load my functions and completions
 fpath=(~/.zprezto/functions $fpath)
@@ -22,32 +16,36 @@ compdef _goenv goenv
 # Load my profile.
 source ~/.zprofile
 
-# Terminal fonts
-# https://github.com/ryanoasis/nerd-fonts#option-1-install-script
-
-# GVM
-[[ -s "/home/jpbetz/.gvm/scripts/gvm" ]] && source "/home/jpbetz/.gvm/scripts/gvm"
-
-# Golang defaults
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
-
-
 ############# Powerlevel9k config #####################
 
+# Terminal fonts
+# https://github.com/ryanoasis/nerd-fonts#option-1-install-script
+POWERLEVEL9K_MODE='nerdfont-fontconfig'
+
+# TODO: move this to something like: goenv cd
 cdp() {
   local env_dir=$(lookup_goenv_dir)
   if [ $env_dir ]; then
-    local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
+    local project_dir=$env_dir/src/$(jq -r .project "$env_dir/.goenv")
     cd $project_dir
   fi
 }
 
 custom_goenv() {
   local env_dir=$(lookup_goenv_dir)
+  
   if [ $env_dir ]; then
-    local name=$(jq -r .name $env_dir/.goenv)
-    echo "\uf427 $name"
+    local name=$(basename $env_dir)
+    # check the working directory, if it contains a .goenv for another
+    # project, display an alert.
+    local wd_match="$(upsearch_first ".goenv")"
+    local color=$POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND
+    if [ -s "$wd_match/.goenv" ]; then
+      if [[ $env_dir != $wd_match ]]; then
+        color=$POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND
+      fi
+    fi
+    echo -n -e "%{%F{$color}%}\uf427 ${name}%{%f%}"
   fi
 }
 
@@ -72,6 +70,7 @@ green='64'
 POWERLEVEL9K_CUSTOM_GOENV="custom_goenv"
 POWERLEVEL9K_CUSTOM_GOENV_BACKGROUND=$base3
 POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND=$base03
+POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND=$red
 
 POWERLEVEL9K_GO_VERSION_BACKGROUND=$base3
 POWERLEVEL9K_GO_VERSION_FOREGROUND=$base03

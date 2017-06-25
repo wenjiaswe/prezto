@@ -1,10 +1,8 @@
 lookup_goenv_dir() {
-  local env_dir
   if [ "$GOPATH" ]; then
-    for env_dir in $(upsearch_gopath); do
-      if [[ "$env_dir" != "/" && "$env_dir" != "$HOME"  ]]; then
-        echo "$env_dir"
-      fi
-  done
+    local goenv=$GOPATH/.goenv
+    if [ -s "$goenv" ]; then
+      echo "$GOPATH"
+    fi
   fi
 }

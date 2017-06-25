@@ -1,51 +1,23 @@
-#
-# Executes commands at login pre-zshrc.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
-export PATH=/usr/local/bin:$PATH
-
 # Editor
 export EDITOR=/usr/bin/emacs
 
-# Root Path
-export PATH=/Users/jbetz/bin:${PATH}
-
-# arc
-export PATH=~/base/phacility/arcanist/bin:$PATH
-# source /Users/jbetz/base/phacility/arcanist/resources/shell/bash-completion
-
-# Java
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home
+# Private bin
+export PATH=$HOME/bin:$PATH
 
 # Go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
 
-alias godeps="go list -f '{{ join .Deps  \"\n\"}}' ."
-
-# Tools
-alias colors='for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""'
-
-#
+# Aliases
 alias l='ls -lFh'
 alias la='ls -lAFh'
 alias lr='ls -tRFh'
 alias ll='ls -l'
-
 alias zshrc='$EDITOR ~/.zshrc'
 alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
-alias notify='terminal-notifier -title "Zsh (exit:$?)"'
-
-# brew install atool
-alias xx='atool -x'
-
 alias ps="ps -ef"
-
-# try this out?
-# rm='trash-put -v'
-
-alias mcd='multiproduct_jump'
+alias godeps="go list -f '{{ join .Deps  \"\n\"}}' ."
+alias colors='for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""'

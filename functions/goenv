@@ -1,6 +1,14 @@
 goenv() {
   if [ $1 ]; then
     local env_dir=$HOME/Projects/$1
+    if [ ! -d $env_dir ]; then
+      echo "Project '$1' not found under $HOME/Projects"
+      return 1
+    fi
+    if [ ! -s $env_dir/.goenv ]; then
+      echo "No .goenv file found in $Home/Projects/$1 directory"
+      return 1
+    fi
     local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
     local gvm=$(jq -r .gvm $env_dir/.goenv)
     gvm use $gvm > /dev/null
@@ -9,24 +17,28 @@ goenv() {
       return 1
     fi
     export GOPATH=$env_dir
-    # Remove previous GOENV_PATH
-    if [ $GOENV_PATH ]; then
-      export PATH=${PATH//:$GOENV_PATH/}
+    # Remove previous GOENV_BIN_PATH
+    if [ $GOENV_BIN_PATH ]; then
+      export PATH=${PATH//:$GOENV_BIN_PATH/}
     fi
-    export GOENV_PATH=$GOPATH/bin
-    export PATH=$PATH:$GOENV_PATH
+    export GOENV_BIN_PATH=$GOPATH/bin
+    export PATH=$PATH:$GOENV_BIN_PATH
+    export GOENV_NAME=$(basename $env_dir)
     cd $project_dir
     return 0
   fi
 
-  local env_dir=$(lookup_goenv_dir)  
+  local env_dir=$(lookup_goenv_dir)
   if [ $env_dir ]; then
-      local name=$(jq -r .name $env_dir/.goenv)
       local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)
-      echo "$name"
-      echo "\tproject_dir: ${project_dir}"
-      echo "\tgo: ${$(which go)} (${$(go version)})"
+      echo "${GOENV_NAME} (${env_dir})"
+      echo "project: ${project_dir}"
+      echo "golang:"
+      echo "\texecutable: ${$(which go)}"
+      echo "\tversion: ${$(go version)}"
       echo "\tGOPATH: ${GOPATH}"
       echo "\tGOROOT: ${GOROOT}"
+      echo "system:"
+      echo "\t${$(uname)} ${$(arch)}"
   fi
 }
