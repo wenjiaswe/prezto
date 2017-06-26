@@ -48,5 +48,7 @@ goenv() {
       echo "\tversion: ${$(go version)}"
       echo "\tGOPATH: ${GOPATH}"
       echo "\tGOROOT: ${GOROOT}"
+      echo "gcloud active config:"
+      gcloud config configurations list --filter IS_ACTIVE=True | awk '{ print "\t" $0 }'
   fi
 }
