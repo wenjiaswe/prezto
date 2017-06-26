@@ -16,6 +16,16 @@ goenv() {
       echo "gvm use ${gvm} failed."
       return 1
     fi
+
+    local gcloud_config=$(jq -r .gcloud.config $env_dir/.goenv)
+    if [ "$gcloud_config" ]; then
+      gcloud config configurations activate ${gcloud_config} &> /dev/null
+      if [ $? != 0 ]; then
+        echo "failed to activate '${gcloud_config}' gcloud config configuration."
+        return 1
+      fi
+    fi
+
     export GOPATH=$env_dir
     # Remove previous GOENV_BIN_PATH
     if [ $GOENV_BIN_PATH ]; then
@@ -38,7 +48,5 @@ goenv() {
       echo "\tversion: ${$(go version)}"
       echo "\tGOPATH: ${GOPATH}"
       echo "\tGOROOT: ${GOROOT}"
-      echo "system:"
-      echo "\t${$(uname)} ${$(arch)}"
   fi
 }
