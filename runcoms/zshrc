@@ -20,7 +20,10 @@ compdef _goenv goenv
 # Load my profile.
 source ~/.zprofile
 
-eval `dircolors $HOME/.dir_colors/dircolors`
+# Machine Local zshrc
+[[ -s "$HOME/.zprezto/runcoms/local-zshrc" ]] && source "$HOME/.zprezto/runcoms/local-zshrc"
+
+[[ -s "$HOME/.dir_colors/dircolors" ]] && eval `dircolors $HOME/.dir_colors/dircolors`
 
 ############# Powerlevel9k config #####################
 
