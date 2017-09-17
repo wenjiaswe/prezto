@@ -20,10 +20,7 @@ compdef _goenv goenv
 # Load my profile.
 source ~/.zprofile
 
-# Citc
-source /etc/bash_completion.d/g4d
-
-eval `dircolors /usr/local/google/home/jpbetz/.dir_colors/dircolors`
+eval `dircolors $HOME/.dir_colors/dircolors`
 
 ############# Powerlevel9k config #####################
 
