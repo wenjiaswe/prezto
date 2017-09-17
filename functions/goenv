@@ -18,10 +18,29 @@ goenv() {
     fi
 
     local gcloud_config=$(jq -r .gcloud.config $env_dir/.goenv)
-    if [ "$gcloud_config" ]; then
+    if [ "$gcloud_config" != "null" ]; then
       gcloud config configurations activate ${gcloud_config} &> /dev/null
       if [ $? != 0 ]; then
         echo "failed to activate '${gcloud_config}' gcloud config configuration."
+        return 1
+      fi
+    fi
+    local project_id=$(jq -r .gcloud.PROJECT_ID $env_dir/.goenv)
+    if [ "$project_id" != "null" ]; then
+      export PROJECT_ID="$project_id"
+      gcloud config set project $PROJECT_ID &> /dev/null
+      if [ $? != 0 ]; then
+        echo "failed to set gcloud project to '${PROJECT_ID}'."
+        return 1
+      fi
+    fi
+
+    local kube_context=$(jq -r .kube.context $env_dir/.goenv)
+    if [ "$kube_context" != "null" ]; then
+      alias kubectl=$project_dir/cluster/kubectl.sh
+      $project_dir/cluster/kubectl.sh config set-context $kube_context &> /dev/null
+      if [ $? != 0 ]; then
+        echo "failed to activate '${kube_context}' kubectl config context."
         return 1
       fi
     fi
@@ -50,5 +69,7 @@ goenv() {
       echo "\tGOROOT: ${GOROOT}"
       echo "gcloud active config:"
       gcloud config configurations list --filter IS_ACTIVE=True | awk '{ print "\t" $0 }'
+      echo "kube context:"
+      $project_dir/cluster/kubectl.sh config current-context | awk '{ print "\t" $0 }'
   fi
 }

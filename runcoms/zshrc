@@ -1,4 +1,8 @@
+# Disable user autocomplete-- slow with NFS
+zstyle ':completion:*' users
+
 export TERM="xterm-256color"
+alias emacs='TERM=xterm-256color emacs -nw'
 
 # GVM
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
@@ -15,6 +19,11 @@ compdef _goenv goenv
 
 # Load my profile.
 source ~/.zprofile
+
+# Citc
+source /etc/bash_completion.d/g4d
+
+eval `dircolors /usr/local/google/home/jpbetz/.dir_colors/dircolors`
 
 ############# Powerlevel9k config #####################
 
@@ -45,6 +54,8 @@ custom_goenv() {
        if [[ $env_dir != $wd_match ]]; then
 	 echo -n "%{%F{$POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND}%}"
        fi
+       # TODO: add check for gcloud active config
+       # TODO: add check for gcloud active kube context
      fi
      echo -n "${name}"
      echo -n "%{%F{$POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND}%}"
@@ -63,8 +74,10 @@ custom_goenv() {
 custom_gcloud() {
   local config_out="${$(gcloud config configurations list --filter IS_ACTIVE=True 2> /dev/null | tail -1)}"
   if [ $config_out ]; then
-    local active_config=$(echo "${config_out}" | cut -d " " -f 1)
-    echo -n "\ue7b2 ${active_config}"
+    local active_config=$(echo "${config_out}" | awk '{print $4}') # field 1 is the config name, field 4 is the project name
+    if [ $active_config != "null" ]; then
+      echo -n "\ue7b2 ${active_config}"
+    fi
   fi
 }
 
@@ -92,7 +105,7 @@ POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND=$base02
 POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND=$red
 
 POWERLEVEL9K_CUSTOM_GCLOUD="custom_gcloud"
-POWERLEVEL9K_CUSTOM_GCLOUD_BACKGROUND=$base02
+POWERLEVEL9K_CUSTOM_GCLOUD_BACKGROUND='black'
 POWERLEVEL9K_CUSTOM_GCLOUD_FOREGROUND=$blue
 
 POWERLEVEL9K_GO_VERSION_BACKGROUND=$base3
@@ -101,7 +114,7 @@ POWERLEVEL9K_GO_VERSION_FOREGROUND=$base03
 POWERLEVEL9K_VCS_GIT_ICON=''
 POWERLEVEL9K_VCS_CLEAN_BACKGROUND=$blue
 POWERLEVEL9K_VCS_CLEAN_FOREGROUND=$base03
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$yellow
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$violet
 POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=$base03
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$magenta
 POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=$base03
@@ -119,8 +132,8 @@ POWERLEVEL9K_HOME_SUB_ICON=''
 POWERLEVEL9K_FOLDER_ICON=''
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
 
-# removed go_version
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_gcloud custom_goenv vcs context dir)
+# removed go_version and custom_gcloud
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_goenv vcs dir)
 POWERLEVEL9K_DISABLE_RPROMPT=true
 
 DEFAULT_USER=jpbetz
@@ -129,7 +142,7 @@ POWERLEVEL9K_SHOW_CHANGESET=true
 
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/jpbetz/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/home/jpbetz/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+#if [ -f '/home/jpbetz/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/home/jpbetz/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/jpbetz/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/jpbetz/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+#if [ -f '/home/jpbetz/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/jpbetz/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
