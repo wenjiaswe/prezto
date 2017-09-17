@@ -14,9 +14,6 @@ alias colors='for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do ec
 # Etcd
 # alias etcd_rev='ETCDCTL_API=3 etcdctl --endpoints=:2379 endpoint status --write-out="json" | egrep -o '"revision":[0-9]*' | egrep -o "[0-9]*"'
 
-# GCE
-#export GOOGLE_APPLICATION_CREDENTIALS=/usr/local/google/home/jpbetz/Documents/jpbetz-sandbox-ef450245c293.json
-
 # K8s
 GITHUB_USER=jpbetz
 
