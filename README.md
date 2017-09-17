@@ -1,3 +1,11 @@
+jpbetz customizations
+---------------------
+
+For OSX, install:
+```
+brew install coreutils
+```
+
 Prezto — Instantly Awesome Zsh
 ==============================
 
