@@ -1,0 +1,6 @@
+prompt_gvm() {
+  # TODO: if gvm name does not match goenv version, display alert
+  if [ ! -z $gvm_go_name ]; then
+    echo -n "${gvm_go_name}"
+  fi
+}
