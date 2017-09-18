@@ -1,12 +1,13 @@
 goenv() {
+  PROJECT_DIR=${PROJECT_DIR:-"$HOME/projects"}
   if [ $1 ]; then
-    local env_dir=$HOME/Projects/$1
+    local env_dir=$PROJECT_DIR/$1
     if [ ! -d $env_dir ]; then
-      echo "Project '$1' not found under $HOME/Projects"
+      echo "Project '$1' not found under $PROJECT_DIR"
       return 1
     fi
     if [ ! -s $env_dir/.goenv ]; then
-      echo "No .goenv file found in $Home/Projects/$1 directory"
+      echo "No .goenv file found in $PROJECT_DIR/$1 directory"
       return 1
     fi
     local project_dir=$env_dir/src/$(jq -r .project $env_dir/.goenv)

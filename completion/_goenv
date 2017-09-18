@@ -1,6 +1,7 @@
 #compdef goenv
 
 _goenv() {
+  PROJECT_DIR=${PROJECT_DIR:-"$HOME/projects"}
   local curcontext="$curcontext" state line
   typeset -A opt_args
 
@@ -9,7 +10,7 @@ _goenv() {
     
   case "$state" in
     (project)
-      _arguments '1:project:($(ls $HOME/Projects || xargs /bin/basename || tr \\n " "))' ;;
+      _arguments '1:project:($(ls $PROJECT_DIR || xargs /bin/basename || tr \\n " "))' ;;
   esac
 }
 

@@ -1,148 +1,41 @@
 # Disable user autocomplete-- slow with NFS
 zstyle ':completion:*' users
 
-export TERM="xterm-256color"
-alias emacs='TERM=xterm-256color emacs -nw'
-
-# GVM
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-
-# Source Prezto.
-[[ -s "$HOME/.zprezto/init.zsh" ]] && source "$HOME/.zprezto/init.zsh"
-
 # load my functions and completions
 fpath=(~/.zprezto/functions $fpath)
 autoload -U ~/.zprezto/functions/*(:t)
 fpath=(~/.zprezto/completion $fpath)
 autoload -U ~/.zprezto/completion/*(:t)
+
+# Custom Autocompletions
+# TODO: Where to keep this?
 compdef _goenv goenv
+
+# Aliases
+alias emacs='emacs -nw'
+alias l='ls -lFh'
+alias la='ls -lAFh'
+alias lr='ls -tRFh'
+alias ll='ls -l'
+alias zshrc='$EDITOR ~/.zshrc'
+alias grep='grep --color'
+alias ps="ps -ef"
+alias godeps="go list -f '{{ join .Deps  \"\n\"}}' ."
+
+# GVM
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+# Prezto
+[[ -s "$HOME/.zprezto/init.zsh" ]] && source "$HOME/.zprezto/init.zsh"
+
+# Solarized
+[[ -s "$HOME/.dir_colors/dircolors" ]] && eval `dircolors $HOME/.dir_colors/dircolors`
 
 # Load my profile.
 source ~/.zprofile
 
-# Machine Local zshrc
-[[ -s "$HOME/.zprezto/runcoms/local-zshrc" ]] && source "$HOME/.zprezto/runcoms/local-zshrc"
+# Loca my gitignored machine local zshrc
+[[ -s "$HOME/.zshrc-local" ]] && source "$HOME/.zshrc-local"
 
-[[ -s "$HOME/.dir_colors/dircolors" ]] && eval `dircolors $HOME/.dir_colors/dircolors`
-
-############# Powerlevel9k config #####################
-
-# Terminal fonts
-# https://github.com/ryanoasis/nerd-fonts#option-1-install-script
-POWERLEVEL9K_MODE='nerdfont-fontconfig'
-
-# TODO: move this to something like: goenv cd
-cdp() {
-  local env_dir=$(lookup_goenv_dir)
-  if [ $env_dir ]; then
-    local project_dir=$env_dir/src/$(jq -r .project "$env_dir/.goenv")
-    cd $project_dir
-  fi
-}
-
-custom_goenv() {
-  local env_dir=$(lookup_goenv_dir)
-  if [[ ! -z $env_dir || ! -z $gvm_go_name ]]; then
-    echo -n "\ue626 "
-    if [ ! -z $env_dir ]; then
-     local name=$(basename $env_dir)
-     # check the working directory, if it contains a .goenv for another
-     # project, display an alert.
-     local wd_match="$(upsearch_first ".goenv")"
-
-     if [ -s "$wd_match/.goenv" ]; then
-       if [[ $env_dir != $wd_match ]]; then
-	 echo -n "%{%F{$POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND}%}"
-       fi
-       # TODO: add check for gcloud active config
-       # TODO: add check for gcloud active kube context
-     fi
-     echo -n "${name}"
-     echo -n "%{%F{$POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND}%}"
-   fi
-   if [[ ! -z $env_dir && ! -z $gvm_go_name ]]; then
-     echo -n "%{%F{$base00}%}"
-     echo -n "+"
-   fi
-   if [ ! -z $gvm_go_name ]; then
-     echo -n "%{%F{$base00}%}"
-     echo -n "${gvm_go_name}"
-   fi
-  fi
-}
-
-custom_gcloud() {
-  local config_out="${$(gcloud config configurations list --filter IS_ACTIVE=True 2> /dev/null | tail -1)}"
-  if [ $config_out ]; then
-    local active_config=$(echo "${config_out}" | awk '{print $4}') # field 1 is the config name, field 4 is the project name
-    if [ $active_config != "null" ]; then
-      echo -n "\ue7b2 ${active_config}"
-    fi
-  fi
-}
-
-# http://ethanschoonover.com/solarized
-base03='234'
-base02='235'
-base01='240'
-base00='241'
-base0='244'
-base1='245'
-base2='254'
-base3='230'
-yellow='136'
-orange='166'
-red='160'
-magenta='125'
-violet='61'
-blue='33'
-cyan='37'
-green='64'
-
-POWERLEVEL9K_CUSTOM_GOENV="custom_goenv"
-POWERLEVEL9K_CUSTOM_GOENV_BACKGROUND=$base3
-POWERLEVEL9K_CUSTOM_GOENV_FOREGROUND=$base02
-POWERLEVEL9K_CUSTOM_GOENV_ALERT_FOREGROUND=$red
-
-POWERLEVEL9K_CUSTOM_GCLOUD="custom_gcloud"
-POWERLEVEL9K_CUSTOM_GCLOUD_BACKGROUND='black'
-POWERLEVEL9K_CUSTOM_GCLOUD_FOREGROUND=$blue
-
-POWERLEVEL9K_GO_VERSION_BACKGROUND=$base3
-POWERLEVEL9K_GO_VERSION_FOREGROUND=$base03
-
-POWERLEVEL9K_VCS_GIT_ICON=''
-POWERLEVEL9K_VCS_CLEAN_BACKGROUND=$blue
-POWERLEVEL9K_VCS_CLEAN_FOREGROUND=$base03
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=$violet
-POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=$base03
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=$magenta
-POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=$base03
-
-DIR_BACKGROUND='black'
-DIR_FOREGROUND=$base3
-POWERLEVEL9K_DIR_HOME_BACKGROUND=$DIR_BACKGROUND
-POWERLEVEL9K_DIR_DEFAULT_BACKGROUND=$DIR_BACKGROUND
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=$DIR_BACKGROUND
-POWERLEVEL9K_DIR_HOME_FOREGROUND=$DIR_FOREGROUND
-POWERLEVEL9K_DIR_DEFAULT_FOREGROUND=$DIR_FOREGROUND
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=$DIR_FOREGROUND
-POWERLEVEL9K_HOME_ICON=''
-POWERLEVEL9K_HOME_SUB_ICON=''
-POWERLEVEL9K_FOLDER_ICON=''
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
-
-# removed go_version and custom_gcloud
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_goenv vcs dir)
-POWERLEVEL9K_DISABLE_RPROMPT=true
-
-DEFAULT_USER=jpbetz
-
-POWERLEVEL9K_SHOW_CHANGESET=true
-
-
-# The next line updates PATH for the Google Cloud SDK.
-#if [ -f '/home/jpbetz/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/home/jpbetz/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-#if [ -f '/home/jpbetz/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/jpbetz/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+# Powerlevel9k Customizations
+powerlevel_setup

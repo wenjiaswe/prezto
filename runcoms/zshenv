@@ -18,8 +18,18 @@ fi
 #
 
 export EDITOR='emacs'
-export VISUAL='nano'
+export VISUAL='emacs'
 export PAGER='less'
+
+# Terminal settings
+
+export TERM="xterm-256color"
+
+# Github
+GITHUB_USER=jpbetz
+
+# Private bin
+export PATH=$HOME/bin:$PATH
 
 #
 # Language

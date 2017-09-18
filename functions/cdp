@@ -1,0 +1,8 @@
+# TODO: move this to something like: goenv cd
+cdp() {
+  local env_dir=$(lookup_goenv_dir)
+  if [ $env_dir ]; then
+    local project_dir=$env_dir/src/$(jq -r .project "$env_dir/.goenv")
+    cd $project_dir
+  fi
+}
